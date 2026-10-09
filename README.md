@@ -36,7 +36,7 @@ assets/fonts/         # IBM Plex Sans Hebrew, Karantina (OFL)
 
 ## הרצה
 
-האתר מתפרסם אוטומטית ב-GitHub Pages מהענף `main`, בכתובת https://erez1980.github.io/RK-mislaka/ . אין שלב build.
+האתר מתפרסם אוטומטית ב-GitHub Pages מהענף `main`, בכתובת https://erez1980.github.io/RK-Mislaka/ . אין שלב build.
 
 ---
 
