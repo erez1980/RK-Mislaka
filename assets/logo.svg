@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Cedar (Erez) built from chart bars, with an AI spark on top. Solid fills so <use> works cross-browser. -->
+  <g id="cedar">
+    <path d="M32 1.5 33.6 5.4 37.5 7 33.6 8.6 32 12.5 30.4 8.6 26.5 7 30.4 5.4Z" fill="#FFE3CF"/>
+    <rect x="25" y="14.5" width="14" height="7" rx="3.5" fill="#FFC6A4"/>
+    <rect x="18" y="24.5" width="28" height="7" rx="3.5" fill="#FFB289"/>
+    <rect x="11" y="34.5" width="42" height="7" rx="3.5" fill="#FF9F6E"/>
+    <rect x="4" y="44.5" width="56" height="7" rx="3.5" fill="#F0844E"/>
+    <rect x="29" y="51.5" width="6" height="10" rx="2" fill="#C8663A"/>
+  </g>
+</svg>

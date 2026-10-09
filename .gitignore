@@ -1,0 +1,12 @@
+# Never commit personal pension files
+*.zip
+*.xls
+*.xlsx
+*.xml
+*.pdf
+*.csv
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+node_modules/

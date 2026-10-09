@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Privacy guarantee: the page may load files only from its own origin and may not open any network connection.
+     connect-src 'none' blocks fetch/XHR/WebSocket/beacons, so uploaded data cannot leave the browser. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; worker-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta name="description" content="דשבורד פנסיוני אישי לקבצי המסלקה הפנסיונית. הקבצים נקראים רק בדפדפן ולא נשלחים לשום מקום.">
+<title>הדשבורד הפנסיוני | ארז</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M20 15v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-overview" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c4-1 6-8 9-8s5 5 9 4"/><path d="M3 21h18"/></symbol>
+  <symbol id="i-products" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-deposits" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/></symbol>
+  <symbol id="i-fees" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><path d="m12 8 1.5 2.5L16 12l-2.5 1.5L12 16l-1.5-2.5L8 12l2.5-1.5Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+</svg>
+
+<header class="bar">
+  <div class="bar-inner">
+    <a class="brand" href="./" aria-label="ארז, יועץ השקעות מבוסס AI">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><use href="assets/logo.svg#cedar"/></svg>
+      <span>
+        <span class="brand-name">ארז</span>
+        <span class="brand-sub" style="display:block">יועץ השקעות מבוסס AI</span>
+      </span>
+    </a>
+
+    <nav class="profiles" id="profiles" aria-label="פרופילים"></nav>
+
+    <div class="bar-actions">
+      <button class="privacy-pill" id="privacyBtn" type="button">
+        <svg aria-hidden="true"><use href="#i-lock"/></svg>
+        <span class="pill-text">נשאר רק בדפדפן הזה</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- ===================== Upload screen ===================== -->
+  <section class="upload" id="screenUpload" aria-labelledby="uploadTitle">
+    <div>
+      <h1 id="uploadTitle">כל הפנסיה שלך, במסך אחד</h1>
+      <p class="lede" id="uploadLede">טוענים את הקובץ מהמסלקה הפנסיונית ומקבלים תמונה מלאה: כמה נחסך, כמה צפוי בפרישה, מי הפקיד, אילו ביטוחים קיימים וכמה עולים דמי הניהול.</p>
+
+      <label class="drop" id="drop">
+        <input type="file" id="fileInput" multiple accept=".zip,.xls,.xlsx,.xml">
+        <span class="drop-row">
+          <span class="drop-icon"><svg aria-hidden="true"><use href="#i-upload"/></svg></span>
+          <span>
+            <span class="drop-title" style="display:block">גררו לכאן את קובץ ה-ZIP מהמסלקה</span>
+            <span class="drop-hint" style="display:block">או לחצו לבחירה. אפשר גם קבצי Excel ו-XML בודדים. קובץ עם סיסמה? נבקש אותה מיד.</span>
+          </span>
+        </span>
+      </label>
+
+      <div class="progress" id="progress" hidden>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="log" id="log" role="log" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <aside class="guide">
+      <div>
+        <h2>אילו קבצים להעלות</h2>
+        <ul class="files-list">
+          <li>
+            <span class="file-kind zip">ZIP</span>
+            <span class="file-head"><span class="file-name">הקובץ המלא מהמסלקה</span><span class="file-tag main">הכי פשוט</span></span>
+            <span class="file-desc">גוררים אותו כמו שהוא, גם אם הוא נעול בסיסמה. הדשבורד פותח אותו ומוצא בפנים את כל השאר.</span>
+          </li>
+          <li>
+            <span class="file-kind">XLS</span>
+            <span class="file-head"><span class="file-name">קובץ ה-Excel</span><span class="file-tag main">מקור המידע העיקרי</span></span>
+            <span class="file-desc">שלושה גיליונות: פרטי המוצרים שלי, מעקב הפקדות וכיסויים ביטוחיים. בלעדיו יחסרו קצבה צפויה, הפקדות וביטוחים.</span>
+          </li>
+          <li>
+            <span class="file-kind">XML</span>
+            <span class="file-head"><span class="file-name">קובץ XML לכל חברה מנהלת</span><span class="file-tag">משלים</span></span>
+            <span class="file-desc">מוסיף פרטים מהחברות עצמן: כיסויים, מעסיק, תשואות לתקופות ומוטבים כשהם קיימים.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>איך משיגים את הקובץ</h2>
+        <ol class="steps">
+          <li><span>נכנסים לאזור החוסכים באתר המסלקה, <a href="https://www.swiftness.co.il/savers/" target="_blank" rel="noopener noreferrer">swiftness.co.il</a>, ונרשמים.</span></li>
+          <li><span>מבקשים את <strong>דוח המידע האישי המלא</strong> ומורידים את קובץ ה-ZIP.</span></li>
+          <li><span>גוררים את הקובץ לכאן ומזינים את הסיסמה שהמסלקה מסרה.</span></li>
+          <li><span>חוזרים על זה כל חצי שנה כדי לראות תמונה עדכנית.</span></li>
+        </ol>
+      </div>
+
+      <div class="privacy-note">
+        <svg aria-hidden="true"><use href="#i-lock"/></svg>
+        <div>
+          <strong>הקבצים לא עוזבים את המחשב</strong>
+          הקריאה והחישובים נעשים בדפדפן בלבד. האתר חסום טכנית מלשלוח מידע לאינטרנט, ושום דבר לא נשמר. סגירה או רענון של הדף מוחקים הכל.
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ===================== Dashboard ===================== -->
+  <div class="dash" id="screenDash" hidden>
+    <aside class="rail">
+      <div class="who">
+        <div class="who-name" id="whoName">—</div>
+        <div class="who-meta" id="whoMeta"></div>
+      </div>
+      <nav class="nav" aria-label="ניווט בדשבורד">
+        <button class="nav-btn" data-view="overview" aria-current="page"><svg aria-hidden="true"><use href="#i-overview"/></svg>סקירה</button>
+        <button class="nav-btn" data-view="products"><svg aria-hidden="true"><use href="#i-products"/></svg>מוצרים<span class="nav-count" id="cntProducts"></span></button>
+        <button class="nav-btn" data-view="deposits"><svg aria-hidden="true"><use href="#i-deposits"/></svg>הפקדות<span class="nav-count" id="cntDeposits"></span></button>
+        <button class="nav-btn" data-view="insurance"><svg aria-hidden="true"><use href="#i-shield"/></svg>ביטוחים ומוטבים<span class="nav-count" id="cntInsurance"></span></button>
+        <button class="nav-btn" data-view="fees"><svg aria-hidden="true"><use href="#i-fees"/></svg>דמי ניהול ותשואות</button>
+        <button class="nav-btn" data-view="advisor"><svg aria-hidden="true"><use href="#i-spark"/></svg>יועץ ותחזית<span class="nav-count" id="cntInsights"></span></button>
+        <button class="nav-btn" data-view="files"><svg aria-hidden="true"><use href="#i-file"/></svg>קבצים שנטענו</button>
+      </nav>
+      <div class="rail-foot">
+        <button class="btn" id="addFilesBtn" type="button"><svg aria-hidden="true"><use href="#i-upload"/></svg>הוספת קבצים</button>
+        <button class="btn btn-ghost" id="printBtn" type="button"><svg aria-hidden="true"><use href="#i-print"/></svg>הדפסה או PDF</button>
+      </div>
+    </aside>
+
+    <div class="content">
+
+      <!-- Overview -->
+      <section class="view is-active" id="view-overview" aria-labelledby="t-overview">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-overview">סקירה</h2>
+            <p class="view-sub" id="overviewSub"></p>
+          </div>
+        </div>
+
+        <div class="bridge" id="bridge">
+          <div class="bridge-grid">
+            <div class="stop">
+              <div class="stop-label">חיסכון היום</div>
+              <div class="stop-value" id="hToday">—</div>
+              <div class="stop-note" id="hTodayNote"></div>
+            </div>
+            <div class="stop">
+              <div class="stop-label">צפוי בגיל פרישה</div>
+              <div class="stop-value" id="hExpected">—</div>
+              <div class="stop-note" id="hExpectedNote"></div>
+            </div>
+            <div class="stop final">
+              <div class="stop-label">קצבה חודשית צפויה</div>
+              <div class="stop-value" id="hMonthly">—</div>
+              <div class="stop-note" id="hMonthlyNote"></div>
+            </div>
+          </div>
+          <div class="bridge-line" aria-hidden="true">
+            <svg viewBox="0 0 1000 56" preserveAspectRatio="none">
+              <path class="bridge-path base" d="M985 44 C 800 44, 700 30, 500 26 S 150 8, 15 8"/>
+              <path class="bridge-path draw" id="bridgePath" d="M985 44 C 800 44, 700 30, 500 26 S 150 8, 15 8"/>
+              <circle class="bridge-dot start" cx="985" cy="44" r="6"/>
+              <circle class="bridge-dot" cx="500" cy="26" r="5"/>
+              <circle class="bridge-dot" cx="15" cy="8" r="7"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="ledger" id="ledger"></div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-title">לפי סוג מוצר</div>
+            <div class="panel-sub">חלוקת החיסכון הנוכחי</div>
+            <div class="bars" id="barsType"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">לפי חברה מנהלת</div>
+            <div class="panel-sub">כמה מהכסף מנוהל אצל כל גוף</div>
+            <div class="bars" id="barsCompany"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">מה כדאי לבדוק עכשיו</div>
+          <div class="panel-sub">הממצאים החשובים מתוך הניתוח המלא בעמוד "יועץ ותחזית"</div>
+          <div class="insights" id="insightsTop"></div>
+        </div>
+      </section>
+
+      <!-- Products -->
+      <section class="view" id="view-products" aria-labelledby="t-products">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-products">מוצרים</h2>
+            <p class="view-sub">לחיצה על שורה פותחת את כל הפרטים מהקבצים</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <div class="seg" id="typeFilter" role="group" aria-label="סינון לפי סוג"></div>
+            <div class="seg" id="statusFilter" role="group" aria-label="סינון לפי סטטוס">
+              <button aria-pressed="true" data-v="all">הכל</button>
+              <button aria-pressed="false" data-v="on">פעילים</button>
+              <button aria-pressed="false" data-v="off">לא פעילים</button>
+            </div>
+            <input class="search" id="productSearch" type="search" placeholder="חיפוש לפי שם, חברה או מספר פוליסה" aria-label="חיפוש מוצר">
+          </div>
+          <div class="type-summary" id="typeSummary"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>מוצר</th>
+                  <th>פוליסה</th>
+                  <th>סטטוס</th>
+                  <th class="num">חיסכון</th>
+                  <th class="num">צפוי לפרישה</th>
+                  <th class="num">קצבה</th>
+                  <th class="num">תשואה מתחילת שנה</th>
+                  <th class="num">דמ"נ הפקדה</th>
+                  <th class="num">דמ"נ צבירה</th>
+                </tr>
+              </thead>
+              <tbody id="productsBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="grid-2" id="productsCharts">
+          <div class="panel">
+            <div class="panel-title">חיסכון לפי מוצר</div>
+            <div class="panel-sub" id="chartProductsSub">המוצרים בסינון הנוכחי</div>
+            <div class="chart-box"><canvas id="chProducts" aria-label="תרשים חיסכון לפי מוצר" role="img"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">תשואה מתחילת השנה</div>
+            <div class="panel-sub">לפי מוצר, באחוזים</div>
+            <div class="chart-box"><canvas id="chYtd" aria-label="תרשים תשואה מתחילת השנה" role="img"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Deposits -->
+      <section class="view" id="view-deposits" aria-labelledby="t-deposits">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-deposits">הפקדות</h2>
+            <p class="view-sub" id="depositsSub"></p>
+          </div>
+        </div>
+        <div class="ledger" id="depositsLedger"></div>
+        <div class="panel">
+          <div class="panel-title">הפקדות לפי חודש שכר</div>
+          <div class="panel-sub">עובד, מעסיק ופיצויים. חודש בלי עמודה הוא חודש בלי הפקדה.</div>
+          <div class="chart-box tall"><canvas id="chDepositsMonthly" aria-label="תרשים הפקדות חודשיות" role="img"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <select class="search" id="depositFilter" aria-label="סינון הפקדות לפי מוצר" style="min-width:220px;margin-right:0"></select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>חודש שכר</th>
+                  <th>תאריך ערך</th>
+                  <th>מוצר וחברה</th>
+                  <th>מעסיק</th>
+                  <th class="num">עובד</th>
+                  <th class="num">מעסיק</th>
+                  <th class="num">פיצויים</th>
+                  <th class="num">סה"כ</th>
+                </tr>
+              </thead>
+              <tbody id="depositsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Insurance -->
+      <section class="view" id="view-insurance" aria-labelledby="t-insurance">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-insurance">ביטוחים ומוטבים</h2>
+            <p class="view-sub">מה המשפחה מקבלת אם משהו קורה</p>
+          </div>
+        </div>
+        <div class="ledger" id="insuranceLedger"></div>
+        <div class="panel">
+          <div class="panel-title">כיסויים ביטוחיים</div>
+          <div class="panel-sub">מגיליון הכיסויים ומקובצי ה-XML</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>סוג הכיסוי</th>
+                  <th>תוכנית</th>
+                  <th>חברה</th>
+                  <th>מקבל התשלום</th>
+                  <th class="num">סכום חד פעמי</th>
+                  <th class="num">קצבה חודשית</th>
+                </tr>
+              </thead>
+              <tbody id="insuranceBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">מוטבים</div>
+          <div class="panel-sub">מי מקבל את הכסף אם המבוטח נפטר</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>שם</th><th>קרבה</th><th>מוצר</th><th class="num">אחוז</th></tr></thead>
+              <tbody id="beneficiariesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fees & returns -->
+      <section class="view" id="view-fees" aria-labelledby="t-fees">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-fees">דמי ניהול ותשואות</h2>
+            <p class="view-sub">כמה זה עולה בפועל, ואיך הכסף עובד</p>
+          </div>
+        </div>
+        <div class="ledger" id="feesLedger"></div>
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-title">מפת דמי הניהול</div>
+            <div class="panel-sub">כל נקודה היא מוצר. ימינה ולמעלה זה יקר יותר. גודל הנקודה הוא גודל החיסכון.</div>
+            <div class="chart-box tall"><canvas id="chFeesMap" aria-label="מפת דמי ניהול" role="img"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">עלות שנתית משוערת לכל מוצר</div>
+            <div class="panel-sub">חיסכון כפול דמי הניהול מהצבירה</div>
+            <div class="bars" id="barsFeeCost"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">פירוט לפי מוצר</div>
+          <div class="panel-sub">תשואות ל-12, 36 ו-60 חודשים מופיעות כשהן קיימות בקובצי ה-XML</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>מוצר</th>
+                  <th class="num">חיסכון</th>
+                  <th class="num">דמ"נ הפקדה</th>
+                  <th class="num">דמ"נ צבירה</th>
+                  <th class="num">עלות שנתית</th>
+                  <th class="num">מתחילת שנה</th>
+                  <th class="num">12 ח'</th>
+                  <th class="num">36 ח'</th>
+                  <th class="num">60 ח'</th>
+                  <th>הערכה</th>
+                </tr>
+              </thead>
+              <tbody id="feesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Advisor -->
+      <section class="view" id="view-advisor" aria-labelledby="t-advisor">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-advisor">יועץ ותחזית</h2>
+            <p class="view-sub">ממצאים מהנתונים שלך וסימולציה של החיסכון עד הפרישה</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">ממצאים</div>
+          <div class="panel-sub">מסודרים לפי דחיפות. זו הכוונה כללית ולא ייעוץ פנסיוני אישי.</div>
+          <div class="insights" id="insightsAll"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">סימולטור פרישה</div>
+          <div class="panel-sub">החיסכון הנוכחי כבר מולא מהקבצים. שנו נתון והתחזית מתעדכנת.</div>
+          <div class="sim">
+            <form class="sim-form" id="simForm" autocomplete="off">
+              <div class="field"><label for="simAge">גיל היום</label><input id="simAge" type="number" inputmode="numeric" min="18" max="80" value="45"></div>
+              <div class="field"><label for="simRetire">גיל פרישה</label><input id="simRetire" type="number" inputmode="numeric" min="50" max="80" value="67"></div>
+              <div class="field"><label for="simSalary">שכר ברוטו חודשי לפנסיה (₪)</label><input id="simSalary" type="number" inputmode="numeric" min="0" step="500" value="20000"></div>
+              <div class="field"><label for="simPct">שיעור הפקדה כולל (%)</label><input id="simPct" type="number" inputmode="decimal" min="0" max="40" step="0.5" value="18.5"><small>עובד, מעסיק ופיצויים יחד</small></div>
+              <div class="field"><label for="simExisting">חיסכון קיים (₪)</label><input id="simExisting" type="number" inputmode="numeric" min="0" step="1000" value="0"></div>
+              <div class="field"><label for="simReturn">תשואה שנתית צפויה (%)</label><input id="simReturn" type="number" inputmode="decimal" min="-5" max="15" step="0.25" value="4"></div>
+              <div class="field"><label for="simFee">דמי ניהול מהצבירה (%)</label><input id="simFee" type="number" inputmode="decimal" min="0" max="3" step="0.05" value="0.3"></div>
+              <div class="field"><label for="simFactor">מקדם המרה לקצבה</label><input id="simFactor" type="number" inputmode="numeric" min="100" max="300" step="1" value="200"></div>
+            </form>
+            <div>
+              <div class="sim-out">
+                <div><div class="l-label">חיסכון בפרישה</div><div class="l-value" id="simTotal">—</div></div>
+                <div><div class="l-label">קצבה חודשית</div><div class="l-value accent" id="simPension">—</div></div>
+                <div><div class="l-label">שנים עד הפרישה</div><div class="l-value" id="simYears">—</div></div>
+              </div>
+              <div class="chart-box tall"><canvas id="chSim" aria-label="תחזית חיסכון עד הפרישה" role="img"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Files -->
+      <section class="view" id="view-files" aria-labelledby="t-files">
+        <div class="view-head">
+          <div>
+            <h2 class="view-title" id="t-files">קבצים שנטענו</h2>
+            <p class="view-sub">מה נקרא מכל קובץ. הקבצים עצמם נמצאים רק בזיכרון של הדף.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>קובץ</th><th>סוג</th><th>מה נמצא</th></tr></thead>
+              <tbody id="filesBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">יומן טעינה</div>
+          <div class="panel-sub">אם משהו חסר, כאן רואים מה זוהה בכל קובץ</div>
+          <div class="log" id="fullLog" style="max-height:none"></div>
+        </div>
+        <div class="panel no-print">
+          <div class="panel-title">ניקוי</div>
+          <div class="panel-sub">מוחק את הנתונים מהזיכרון של הדף. אין עותק בשום מקום אחר.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-danger" id="clearProfileBtn" type="button"><svg aria-hidden="true"><use href="#i-trash"/></svg>מחיקת הנתונים של הפרופיל</button>
+            <button class="btn btn-danger" id="deleteProfileBtn" type="button"><svg aria-hidden="true"><use href="#i-trash"/></svg>מחיקת הפרופיל</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <svg class="foot-logo" viewBox="0 0 64 64" aria-hidden="true"><use href="assets/logo.svg#cedar"/></svg>
+  <div class="foot-name">ארז</div>
+  <div class="foot-sub">יועץ השקעות מבוסס AI</div>
+  <p class="foot-legal">הדשבורד מציג את המידע שבקבצי המסלקה הפנסיונית שנטענו לדף. הקבצים נקראים בדפדפן בלבד, לא נשלחים לשום שרת ולא נשמרים. המידע וההערות אינם ייעוץ השקעות או ייעוץ פנסיוני אישי, ואינם תחליף ליועץ מורשה.</p>
+</footer>
+
+<!-- Product details drawer -->
+<dialog class="drawer" id="drawer" aria-labelledby="drawerTitle">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title" id="drawerTitle"></div>
+      <div class="drawer-sub" id="drawerSub"></div>
+    </div>
+    <button class="icon-btn" type="button" data-close aria-label="סגירה"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</dialog>
+
+<!-- Password modal -->
+<dialog class="modal" id="pwModal" aria-labelledby="pwTitle">
+  <form method="dialog" id="pwForm">
+    <h3 id="pwTitle">הקובץ נעול בסיסמה</h3>
+    <p id="pwText">הזינו את הסיסמה שקיבלתם מהמסלקה יחד עם הקובץ.</p>
+    <div class="field">
+      <label for="pwInput">סיסמה</label>
+      <input id="pwInput" type="password" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="error" id="pwError" role="alert"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" value="ok" type="submit">פתיחת הקובץ</button>
+      <button class="btn btn-ghost" value="cancel" type="submit" formnovalidate>ביטול</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- New profile modal -->
+<dialog class="modal" id="profileModal" aria-labelledby="profileTitle">
+  <form method="dialog" id="profileForm">
+    <h3 id="profileTitle">פרופיל חדש</h3>
+    <p>לכל בן משפחה או חבר פרופיל משלו, עם הקבצים שלו בלבד.</p>
+    <div class="field">
+      <label for="profileName">שם</label>
+      <input id="profileName" type="text" maxlength="30" autocomplete="off">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" value="ok" type="submit">יצירת פרופיל</button>
+      <button class="btn btn-ghost" value="cancel" type="submit" formnovalidate>ביטול</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Privacy modal -->
+<dialog class="modal" id="privacyModal" aria-labelledby="privacyTitle">
+  <form method="dialog">
+    <h3 id="privacyTitle">איפה הנתונים שלכם</h3>
+    <ul>
+      <li>הקבצים נפתחים ומחושבים בתוך הדפדפן שלכם בלבד.</li>
+      <li>לאתר אין שרת או מסד נתונים. הוא דף סטטי.</li>
+      <li>מדיניות האבטחה של הדף חוסמת כל שליחה של מידע לאינטרנט.</li>
+      <li>אין עוגיות, אין אנליטיקס, ואין ספריות חיצוניות. הכל נטען מהאתר עצמו.</li>
+      <li>שום דבר לא נשמר: רענון או סגירה של הדף מוחקים הכל.</li>
+    </ul>
+    <div class="modal-actions">
+      <button class="btn btn-primary" value="ok" type="submit">הבנתי</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="assets/vendor/chart.umd.min.js"></script>
+<script src="assets/vendor/xlsx.full.min.js"></script>
+<script src="assets/vendor/zip-full.min.js"></script>
+<script src="assets/parsers.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
