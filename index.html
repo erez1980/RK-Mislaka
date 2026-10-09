@@ -392,6 +392,33 @@
           <div class="panel-sub">מסודרים לפי דחיפות. זו הכוונה כללית ולא ייעוץ פנסיוני אישי.</div>
           <div class="insights" id="insightsAll"></div>
         </div>
+        <div class="panel" id="aiPanel">
+          <div class="panel-title">ניתוח מעמיק עם AI</div>
+          <div class="panel-sub">הדשבורד מכין סיכום של התיק בלי פרטים מזהים. מעתיקים אותו ומדביקים ב-Claude, ChatGPT או כל צ'אט אחר, ומקבלים ניתוח אישי.</div>
+          <div class="ai-grid">
+            <div class="ai-side">
+              <ul class="ai-facts">
+                <li><strong>לא נכללים:</strong> ת"ז, שם, מספרי פוליסות ושמות מוטבים.</li>
+                <li><strong>לא נשלח לשום מקום:</strong> הסיכום נוצר כאן, ואתם מחליטים אם ואיפה להדביק אותו.</li>
+              </ul>
+              <fieldset class="ai-options">
+                <legend class="sr-only">מה לכלול בסיכום</legend>
+                <label class="check"><input type="checkbox" id="aiDeposits" checked> פירוט הפקדות לפי חודש</label>
+                <label class="check"><input type="checkbox" id="aiEmployer"> שם המעסיק</label>
+                <label class="check"><input type="checkbox" id="aiSim" checked> הנחות הסימולטור (גיל, שכר, תשואה)</label>
+              </fieldset>
+              <div class="ai-actions">
+                <button class="btn btn-primary" id="aiCopy" type="button">העתקת הסיכום</button>
+                <button class="btn" id="aiDownload" type="button">הורדה כקובץ טקסט</button>
+              </div>
+              <div class="cell-sub" id="aiMeta"></div>
+            </div>
+            <div class="field">
+              <label for="aiText">הסיכום שיועתק</label>
+              <textarea id="aiText" class="ai-text" readonly spellcheck="false"></textarea>
+            </div>
+          </div>
+        </div>
         <div class="panel">
           <div class="panel-title">סימולטור פרישה</div>
           <div class="panel-sub">החיסכון הנוכחי כבר מולא מהקבצים. שנו נתון והתחזית מתעדכנת.</div>

@@ -406,6 +406,7 @@
     renderFees(d, m);
     $('#insightsAll').innerHTML = ins.map(insightHtml).join('');
     prefillSim(d, m);
+    renderAiSummary();
     renderFiles(d);
     renderChartsFor(state.view);
   }
@@ -467,7 +468,7 @@
       .map(([c, v]) => ({ label: c, value: v, color: 'var(--dim)' })), m.total);
 
     $('#insightsTop').innerHTML = ins.slice(0, 3).map(insightHtml).join('') +
-      (ins.length > 3 ? `<div style="padding-top:14px"><button class="btn" type="button" data-goto="advisor">לכל ${ins.length} הממצאים</button></div>` : '');
+      `<div style="padding-top:14px;display:flex;gap:8px;flex-wrap:wrap">${ins.length > 3 ? `<button class="btn" type="button" data-goto="advisor">לכל ${ins.length} הממצאים</button>` : ''}<button class="btn" type="button" data-goto="advisor" data-scroll="aiPanel">ניתוח מעמיק עם AI</button></div>`;
   }
 
   // ---------- Products ----------
@@ -752,6 +753,124 @@
   }
 
   // ======================================================================
+  //  Anonymized summary for analysis in an external AI chat
+  //  Excludes: ID number, person name, policy numbers, beneficiary names.
+  //  Nothing is sent anywhere; the user copies it manually.
+  // ======================================================================
+  function buildAiSummary(d) {
+    const m = metrics(d);
+    const withDeposits = $('#aiDeposits').checked;
+    const withEmployer = $('#aiEmployer').checked;
+    const withSim = $('#aiSim').checked;
+    const L = [];
+    const n2 = v => (v == null ? 'לא ידוע' : pctTxt(v));
+    const year = s => { const mm = String(s || '').match(/(\d{4})$/); return mm ? mm[1] : ''; };
+
+    L.push('אתה יועץ פנסיוני ותיק בישראל. לפניך סיכום אנונימי של כל המוצרים הפנסיוניים שלי, מתוך דוח המסלקה הפנסיונית.');
+    L.push('נתח את התיק ותן לי:');
+    L.push('1. את 3 הפעולות החשובות ביותר שכדאי לעשות עכשיו, לפי סדר חשיבות, עם הערכת השפעה כספית כשאפשר.');
+    L.push('2. הערכה של דמי הניהול בכל מוצר ביחס למקובל בשוק היום, ומה סביר לבקש במשא ומתן.');
+    L.push('3. האם מסלולי ההשקעה מתאימים לגיל ולטווח עד הפרישה.');
+    L.push('4. האם הכיסוי הביטוחי (שארים, נכות, ריסק) נראה מספיק, ואם יש כפל כיסויים.');
+    L.push('5. מה כדאי לעשות עם קופות לא פעילות ועם חשבונות כפולים.');
+    L.push('6. שאלות שחשוב שתשאל אותי כדי לדייק את ההמלצות.');
+    L.push('ציין בבירור כשאתה מניח הנחה, ואל תמציא נתונים שלא מופיעים כאן.');
+    L.push('');
+    L.push('=== תמונת מצב ===');
+    if (d.person.reportDate) L.push(`נכון לתאריך: ${d.person.reportDate}`);
+    L.push(`חיסכון כולל היום: ${money(m.total)}`);
+    L.push(`חיסכון צפוי בגיל פרישה (לפי החברות): ${m.expected ? money(m.expected) : 'לא מופיע בדוח'}`);
+    L.push(`קצבה חודשית צפויה (לפי החברות): ${m.monthly ? money(m.monthly) : 'לא מופיע בדוח'}`);
+    L.push(`מוצרים: ${d.products.length}, מתוכם פעילים: ${m.active.length}`);
+    L.push(`עלות דמי ניהול שנתית משוערת: ${m.feeCost ? money(m.feeCost) : 'לא ידוע'}`);
+    L.push(`תשואה משוקללת מתחילת השנה: ${n2(m.ytdW)}`);
+    if (withEmployer && d.person.employers.length) L.push(`מעסיקים: ${d.person.employers.join(', ')}`);
+
+    L.push('');
+    L.push('=== מוצרים ===');
+    d.products.slice().sort((a, b) => b.savings - a.savings).forEach((p, i) => {
+      const parts = [
+        `${i + 1}. ${typeOf(p.type).label}, ${p.company || 'חברה לא ידועה'}${p.name && p.name !== typeOf(p.type).label ? ` (${p.name})` : ''}`,
+        `   סטטוס: ${p.status === 'on' ? 'פעיל' : 'לא פעיל'}${year(p.joinDate) ? `, הצטרפות ${year(p.joinDate)}` : ''}`,
+        `   חיסכון: ${money(p.savings)}${p.expected ? `, צפוי לפרישה: ${money(p.expected)}` : ''}${p.monthly ? `, קצבה צפויה: ${money(p.monthly)}` : ''}`,
+        `   דמי ניהול: ${p.feeD ? pctTxt(p.feeD) : '0%'} מהפקדה, ${p.feeA ? pctTxt(p.feeA) : '0%'} מהצבירה`,
+        `   תשואה: מתחילת שנה ${n2(p.ytd)}${p.ret12 != null ? `, 12 ח' ${n2(p.ret12)}` : ''}${p.ret36 != null ? `, 36 ח' ${n2(p.ret36)}` : ''}${p.ret60 != null ? `, 60 ח' ${n2(p.ret60)}` : ''}`
+      ];
+      if (p.track) parts.push(`   מסלול השקעה: ${p.track}`);
+      const dep = p.depEmp + p.depEr + p.depComp;
+      if (dep) parts.push(`   הפקדות בתקופת הדוח: עובד ${money(p.depEmp)}, מעסיק ${money(p.depEr)}, פיצויים ${money(p.depComp)}`);
+      L.push(...parts);
+    });
+
+    if (withDeposits && d.deposits.length) {
+      const keys = [...new Set(d.deposits.map(r => r.monthKey).filter(Boolean))].sort();
+      const all = keys.length ? monthRange(keys[0], keys[keys.length - 1]) : [];
+      L.push('');
+      L.push('=== הפקדות לפי חודש שכר (כל המוצרים יחד) ===');
+      all.slice(-24).forEach(k => {
+        const rows = d.deposits.filter(r => r.monthKey === k);
+        const t = sum(rows, r => r.emp + r.er + r.comp);
+        L.push(`${monthLabel(k)}: ${t ? `${money(t)} (עובד ${money(sum(rows, r => r.emp))}, מעסיק ${money(sum(rows, r => r.er))}, פיצויים ${money(sum(rows, r => r.comp))})` : 'אין הפקדה'}`);
+      });
+    }
+
+    L.push('');
+    L.push('=== כיסויים ביטוחיים ===');
+    if (d.insurance.length) {
+      d.insurance.forEach(r => L.push(`- ${r.coverType || 'כיסוי'}${r.planName ? `, ${r.planName}` : ''}${r.company ? `, ${r.company}` : ''}: ${r.lumpSum ? `סכום חד פעמי ${money(r.lumpSum)}` : ''}${r.lumpSum && r.monthly ? ', ' : ''}${r.monthly ? `קצבה חודשית ${money(r.monthly)}` : ''}${!r.lumpSum && !r.monthly ? 'סכום לא צוין' : ''}`));
+    } else L.push('לא נמצאו כיסויים בדוח.');
+    if (d.beneficiaries.length) {
+      L.push(`מוטבים רשומים: ${d.beneficiaries.map(b => `${b.relation || 'קרבה לא צוינה'} ${pctTxt(b.percent, 0)}`).join(', ')}`);
+    }
+
+    const ins = buildInsights(d).filter(i => i.level !== 'good');
+    if (ins.length) {
+      L.push('');
+      L.push('=== ממצאים אוטומטיים מהדשבורד ===');
+      ins.forEach(i => L.push(`- ${i.title}`));
+    }
+
+    if (withSim) {
+      L.push('');
+      L.push('=== הנחות שהזנתי בסימולטור ===');
+      L.push(`גיל: ${$('#simAge').value}, גיל פרישה מתוכנן: ${$('#simRetire').value}`);
+      L.push(`שכר ברוטו לפנסיה: ${money(+$('#simSalary').value)} לחודש, שיעור הפקדה: ${$('#simPct').value}%`);
+      L.push(`תשואה שנתית צפויה: ${$('#simReturn').value}%, דמי ניהול מהצבירה: ${$('#simFee').value}%`);
+    }
+    return L.join('\n');
+  }
+
+  function renderAiSummary() {
+    const d = ds();
+    if (!hasData(d)) return;
+    const txt = buildAiSummary(d);
+    $('#aiText').value = txt;
+    $('#aiMeta').textContent = `${txt.length.toLocaleString('he-IL')} תווים`;
+  }
+
+  async function copyAiSummary() {
+    const txt = $('#aiText').value;
+    let ok = false;
+    try { await navigator.clipboard.writeText(txt); ok = true; } catch (e) {
+      // Fallback for browsers without clipboard permission
+      const ta = $('#aiText'); ta.focus(); ta.select();
+      try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    }
+    toast(ok ? 'הסיכום הועתק. הדביקו אותו בצ\'אט AI ושלחו.' : 'ההעתקה נחסמה בדפדפן. סמנו את הטקסט והעתיקו ידנית.', !ok);
+  }
+
+  function downloadAiSummary() {
+    const d = ds();
+    const stamp = (d.person.reportDate || new Date().toLocaleDateString('he-IL')).replace(/\//g, '-');
+    const blob = new Blob(['﻿' + $('#aiText').value], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `pension-summary-${stamp}.txt`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  // ======================================================================
   //  Retirement simulator
   // ======================================================================
   let simPrefilledFor = null;
@@ -862,7 +981,12 @@
 
     // Navigation
     $$('.nav-btn').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
-    document.addEventListener('click', e => { const g = e.target.closest('[data-goto]'); if (g) setView(g.dataset.goto); });
+    document.addEventListener('click', e => {
+      const g = e.target.closest('[data-goto]');
+      if (!g) return;
+      setView(g.dataset.goto);
+      if (g.dataset.scroll) requestAnimationFrame(() => { const t = document.getElementById(g.dataset.scroll); if (t) t.scrollIntoView({ block: 'start' }); });
+    });
 
     // Product filters
     $('#typeFilter').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.filters.type = b.dataset.v; renderProducts(ds()); renderChartsFor('products'); });
@@ -878,7 +1002,10 @@
     $('#drawer').addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target === $('#drawer')) $('#drawer').close(); });
 
     // Simulator updates live
-    $('#simForm').addEventListener('input', runSim);
+    $('#simForm').addEventListener('input', () => { runSim(); renderAiSummary(); });
+    ['#aiDeposits', '#aiEmployer', '#aiSim'].forEach(id => $(id).addEventListener('change', renderAiSummary));
+    $('#aiCopy').addEventListener('click', copyAiSummary);
+    $('#aiDownload').addEventListener('click', downloadAiSummary);
     $('#simForm').addEventListener('submit', e => e.preventDefault());
 
     // Clearing
