@@ -1,4 +1,4 @@
-# RK-Mislaka: הדשבורד הפנסיוני של ארז
+# RK-Mislaka: דשבורד פנסיוני לקבצי המסלקה
 
 דשבורד אישי לקבצי **המסלקה הפנסיונית**. טוענים את קובץ ה-ZIP שמורידים מהמסלקה (גם אם הוא נעול בסיסמה) ומקבלים תמונה מלאה: חיסכון היום, חיסכון וקצבה צפויים בפרישה, הפקדות לפי חודש, כיסויים ביטוחיים ומוטבים, דמי ניהול ותשואות, ממצאים אוטומטיים וסימולטור פרישה.
 
@@ -33,9 +33,9 @@ index.html            # the page, with CSP
 assets/app.css        # styles (local fonts only)
 assets/parsers.js     # Excel + XML parsing, no DOM, no network
 assets/app.js         # UI, charts, insights, simulator
-assets/logo.svg       # cedar logo
+assets/logo.svg       # RK-Mislaka badge (rochvim-kavuh.com style)
 assets/vendor/        # Chart.js, SheetJS, zip.js (+ licenses)
-assets/fonts/         # IBM Plex Sans Hebrew, Karantina (OFL)
+assets/fonts/         # IBM Plex Sans Hebrew, Karantina, Heebo (OFL)
 ```
 
 ## הרצה

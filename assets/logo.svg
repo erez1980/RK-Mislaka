@@ -1,11 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Cedar (Erez) built from chart bars, with an AI spark on top. Solid fills so <use> works cross-browser. -->
-  <g id="cedar">
-    <path d="M32 1.5 33.6 5.4 37.5 7 33.6 8.6 32 12.5 30.4 8.6 26.5 7 30.4 5.4Z" fill="#FFE3CF"/>
-    <rect x="25" y="14.5" width="14" height="7" rx="3.5" fill="#FFC6A4"/>
-    <rect x="18" y="24.5" width="28" height="7" rx="3.5" fill="#FFB289"/>
-    <rect x="11" y="34.5" width="42" height="7" rx="3.5" fill="#FF9F6E"/>
-    <rect x="4" y="44.5" width="56" height="7" rx="3.5" fill="#F0844E"/>
-    <rect x="29" y="51.5" width="6" height="10" rx="2" fill="#C8663A"/>
+  <!-- RK-Mislaka badge: same language as the rochvim-kavuh.com round badge (forest ridges on deep green),
+       with the ridge turned into a rising savings line and an AI spark at the peak. -->
+  <defs>
+    <clipPath id="rk-clip"><circle cx="32" cy="32" r="30.5"/></clipPath>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="#0d2c20"/>
+  <g clip-path="url(#rk-clip)">
+    <circle cx="44" cy="16" r="20" fill="#0f3b2a" opacity=".7"/>
+    <path d="M0 44 L10 35 L18 40 L28 27 L38 36 L46 29 L64 41 V64 H0Z" fill="#0a3d2a"/>
+    <path d="M0 51 L12 45 L22 49 L34 41 L44 47 L54 42 L64 46 V64 H0Z" fill="#1d9e75"/>
+    <path d="M0 57 L14 53 L28 56 L42 51 L64 55 V64 H0Z" fill="#04140c" opacity=".55"/>
   </g>
+  <polyline points="11,47 21,41 29,43 39,31 47,25" fill="none" stroke="#5dcaa5" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="47" cy="25" r="3.6" fill="#f5f5f7"/>
+  <path d="M53 9.5 54.3 12.7 57.5 14 54.3 15.3 53 18.5 51.7 15.3 48.5 14 51.7 12.7Z" fill="#85b7eb"/>
+  <circle cx="32" cy="32" r="30.25" fill="none" stroke="#5dcaa5" stroke-opacity=".55" stroke-width="1.5"/>
 </svg>

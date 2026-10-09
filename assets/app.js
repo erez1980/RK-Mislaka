@@ -654,15 +654,15 @@
     const C = window.Chart;
     C.defaults.font.family = 'Plex, system-ui, sans-serif';
     C.defaults.font.size = 12;
-    C.defaults.color = '#9DB6B2';
-    C.defaults.borderColor = 'rgba(157,182,178,.12)';
+    C.defaults.color = '#9fbfb2';
+    C.defaults.borderColor = 'rgba(93,202,165,.12)';
     C.defaults.plugins.legend.rtl = true;
     C.defaults.plugins.legend.labels.boxWidth = 10;
     C.defaults.plugins.legend.labels.boxHeight = 10;
     C.defaults.plugins.tooltip.rtl = true;
     C.defaults.plugins.tooltip.textDirection = 'rtl';
-    C.defaults.plugins.tooltip.backgroundColor = '#14363D';
-    C.defaults.plugins.tooltip.borderColor = '#21474F';
+    C.defaults.plugins.tooltip.backgroundColor = '#103326';
+    C.defaults.plugins.tooltip.borderColor = '#1d4a37';
     C.defaults.plugins.tooltip.borderWidth = 1;
     C.defaults.plugins.tooltip.padding = 10;
     C.defaults.maintainAspectRatio = false;
@@ -677,7 +677,7 @@
     charts[id] = new Chart(el, config);
   }
 
-  const moneyAxis = { ticks: { callback: v => compact(v) }, grid: { color: 'rgba(157,182,178,.08)' } };
+  const moneyAxis = { ticks: { callback: v => compact(v) }, grid: { color: 'rgba(93,202,165,.08)' } };
   const shortName = s => (s.length > 18 ? s.slice(0, 17) + '…' : s);
 
   function renderChartsFor(view) {
@@ -697,7 +697,7 @@
         type: 'bar',
         data: { labels: ylist.map(p => shortName(p.name)), datasets: [{ data: ylist.map(p => p.ytd), backgroundColor: ylist.map(p => p.ytd < 0 ? '#FF7A85' : '#5EEAA8'), borderRadius: 4, maxBarThickness: 22 }] },
         options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { title: c => ylist[c[0].dataIndex].name, label: c => ' ' + pctTxt(c.parsed.x) } } },
-          scales: { x: { reverse: true, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(157,182,178,.08)' } }, y: { position: 'right', grid: { display: false } } } }
+          scales: { x: { reverse: true, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(93,202,165,.08)' } }, y: { position: 'right', grid: { display: false } } } }
       });
     }
     if (view === 'deposits') {
@@ -742,8 +742,8 @@
           plugins: { legend: { display: false }, tooltip: { callbacks: { title: c => pts[c[0].dataIndex].name + ', ' + pts[c[0].dataIndex].company,
             label: c => [` מהצבירה: ${pctTxt(pts[c.dataIndex].feeA)}`, ` מההפקדה: ${pctTxt(pts[c.dataIndex].feeD)}`, ` חיסכון: ${money(pts[c.dataIndex].savings)}`] } } },
           scales: {
-            x: { reverse: true, min: 0, suggestedMax: 1, grace: '12%', title: { display: true, text: 'דמי ניהול מהצבירה' }, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(157,182,178,.08)' } },
-            y: { position: 'right', min: 0, suggestedMax: 4, grace: '12%', title: { display: true, text: 'דמי ניהול מההפקדה' }, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(157,182,178,.08)' } }
+            x: { reverse: true, min: 0, suggestedMax: 1, grace: '12%', title: { display: true, text: 'דמי ניהול מהצבירה' }, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(93,202,165,.08)' } },
+            y: { position: 'right', min: 0, suggestedMax: 4, grace: '12%', title: { display: true, text: 'דמי ניהול מההפקדה' }, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(93,202,165,.08)' } }
           }
         },
         plugins: [thresholds]
@@ -909,8 +909,8 @@
     chart('chSim', {
       type: 'line',
       data: { labels, datasets: [
-        { label: 'עם הפקדות שוטפות', data: tot, borderColor: '#FF9F6E', backgroundColor: 'rgba(255,159,110,.12)', fill: true, tension: .3, pointRadius: 0, borderWidth: 2 },
-        { label: 'רק החיסכון הקיים', data: ex, borderColor: '#9DB6B2', borderDash: [4, 4], fill: false, tension: .3, pointRadius: 0, borderWidth: 1.5 }
+        { label: 'עם הפקדות שוטפות', data: tot, borderColor: '#5dcaa5', backgroundColor: 'rgba(93,202,165,.12)', fill: true, tension: .3, pointRadius: 0, borderWidth: 2 },
+        { label: 'רק החיסכון הקיים', data: ex, borderColor: '#9fbfb2', borderDash: [4, 4], fill: false, tension: .3, pointRadius: 0, borderWidth: 1.5 }
       ] },
       options: { interaction: { mode: 'index', intersect: false },
         plugins: { legend: { position: 'top', align: 'start' }, tooltip: { callbacks: { title: c => `גיל ${c[0].label}`, label: c => ` ${c.dataset.label}: ${money(c.parsed.y)}` } } },

@@ -11,7 +11,7 @@
     pension:    { label: 'קרן פנסיה',    color: 'var(--t-pension)',    hex: '#7CC4FF' },
     hishtalmut: { label: 'קרן השתלמות',  color: 'var(--t-hishtalmut)', hex: '#F2C46D' },
     gemel:      { label: 'קופת גמל',      color: 'var(--t-gemel)',      hex: '#B5E07A' },
-    life:       { label: 'ביטוח חיים וחיסכון', color: 'var(--t-life)',  hex: '#4FD1C5' },
+    life:       { label: 'ביטוח חיים וחיסכון', color: 'var(--t-life)',  hex: '#E8A87C' },
     risk:       { label: 'ריסק וכיסויים', color: 'var(--t-risk)',       hex: '#B9A3FF' },
     other:      { label: 'אחר',           color: 'var(--t-other)',      hex: '#8FA3A8' }
   };
